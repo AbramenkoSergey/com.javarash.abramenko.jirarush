@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
 
 @UtilityClass
 public class FileUtil {
@@ -25,14 +27,17 @@ public class FileUtil {
             throw new IllegalRequestDataException("Select a file to upload.");
         }
 
-        File dir = new File(directoryPath);
-        if (dir.exists() || dir.mkdirs()) {
-            File file = new File(directoryPath + fileName);
-            try (OutputStream outStream = new FileOutputStream(file)) {
-                outStream.write(multipartFile.getBytes());
-            } catch (IOException ex) {
-                throw new IllegalRequestDataException("Failed to upload file" + multipartFile.getOriginalFilename());
+        Path dirPath = Paths.get(directoryPath);
+        try {
+            if (Files.notExists(dirPath)) {
+                Files.createDirectories(dirPath);
             }
+
+            Path filePath = dirPath.resolve(fileName);
+            // Запись файла с помощью NIO
+            Files.write(filePath, multipartFile.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException ex) {
+            throw new IllegalRequestDataException("Failed to upload file " + multipartFile.getOriginalFilename());
         }
     }
 
@@ -60,6 +65,7 @@ public class FileUtil {
     }
 
     public static String getPath(String titleType) {
+
         return String.format(ATTACHMENT_PATH, titleType.toLowerCase());
     }
 }
