@@ -21,6 +21,9 @@ spring:
         format_sql: true
         default_batch_fetch_size: 20
         jdbc.batch_size: 20
+  messages:
+    basename: messages
+    encoding: UTF-8
 
   datasource:
     url: jdbc:postgresql://localhost:5432/jira
