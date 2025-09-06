@@ -35,3 +35,6 @@
 ### что бы он использовал современный подход для работы с файловой системмой
 ### -- Вынести чувствительную информацию в отдельный проперти файл
 ### -- Добавить локализацию минимум на двух языках для шаблонов писем (mails) и стартовой страницы index.html.
+### -- Write a Dockerfile for the main server
+### -- Write a docker-compose file to run the server container with the DB and nginx. 
+### For nginx, use the config file config/nginx.conf. The config file can be edited if necessary. Hard task
